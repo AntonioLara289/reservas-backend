@@ -53,25 +53,44 @@ class UsuarioController extends Controller
         }
 
         $usuario_email = Usuario::where('correo', $request->correo)
+        ->select('*', 'id_usuario')
         ->first();
 
         $mensaje_error = [];
 
         if(!$usuario_email){
+            $mensaje_error ["code"] = 1;
             $mensaje_error ["error"] = "El correo no existe";
             return response()->json($mensaje_error, 400);
         }
 
         if(!Hash::check($request->clave, $usuario_email->clave)){
+            $mensaje_error ["code"] = 2;
             $mensaje_error ["error"] = "La clave no coincide";
             return response()->json($mensaje_error, 400);
         }
 
+        $token = auth()->guard('api')->attempt(
+            [
+                'correo'   => $request->correo,
+                'password' => $request->clave 
+            ]
+        );
+
         $response = [
+            "token" => $token,
             "usuario" => $usuario_email
         ];
 
         return response()->json($response, 200);
 
+    }
+
+    public function getTokenData(Request $request){
+        
+    
+        $payload = auth()->payload();
+        return $nombre = $payload->get('id');
+        
     }
 }

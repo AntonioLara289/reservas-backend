@@ -10,3 +10,15 @@ Route::get('/user', function (Request $request) {
 
 Route::post('usuario/registrar', [UsuarioController::class, "crear"]);
 Route::post('usuario/login', [UsuarioController::class, "login"]);
+
+
+// Rutas Protegidas por JWT
+Route::middleware('auth:api')->group(function () {
+    
+    // Esta es la nueva versión de /user para JWT
+    Route::get('/user', function (Request $request) {
+        return response()->json(auth()->user());
+    });
+
+    Route::get('token', [UsuarioController::class, 'getTokenData']);
+});
