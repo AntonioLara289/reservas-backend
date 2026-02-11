@@ -25,7 +25,7 @@ class UsuarioController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        Usuario::create([
+        $usuario = Usuario::create([
             "nombre" => $request->nombre,
             "correo" => $request->correo,
             "clave" => Hash::make($request->clave),
@@ -33,6 +33,7 @@ class UsuarioController extends Controller
             "rol" => 1
         ]);
 
+        $response ["usuario"] =  $usuario;
         $response ["mensaje"] = "Finalizado";
 
         return response()->json($response, 201);

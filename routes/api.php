@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ReservaController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,6 +20,13 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return response()->json(auth()->user());
     });
-
     Route::get('token', [UsuarioController::class, 'getTokenData']);
+
+    
+    Route::prefix('reservas')->group(function () {
+        
+        Route::post('crear', [ReservaController::class, 'crear']);
+
+    });
+    
 });

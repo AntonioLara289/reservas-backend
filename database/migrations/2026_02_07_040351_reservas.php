@@ -23,7 +23,8 @@ return new class extends Migration
             $table->integer('key_espacio')->nullable(false);
             $table->dateTime('fecha')->nullable(false);
             $table->dateTime('hora')->nullable(false);
-            $table->integer('key_usuario')->nullable(false);
+            // $table->integer('key_usuario')->nullable(false);
+            $table->string('solicitante', 30)->nullable(false);
             $table->text('descripcion')->nullable(false);
             $table->tinyInteger('estatus');
             $table->dateTime('created_at')->nullable(false);

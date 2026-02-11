@@ -17,7 +17,7 @@ class Reserva extends Model
         "key_espacio",
         "fecha",
         "hora",
-        "key_usuario",
+        "solicitante",
         "descripcion",
         "estatus",
     ];
