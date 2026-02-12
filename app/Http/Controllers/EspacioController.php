@@ -17,7 +17,7 @@ class EspacioController extends Controller
 
         $validator = Validator::make($request->all(), $rules = [
             'name' => 'required|string|min:5',
-            'descripcion' => 'required|string|min:10',
+            'descripcion' => 'required|string|min:8',
             'capacidad' => 'required|integer|min:1',
         ]);
 
@@ -50,5 +50,18 @@ class EspacioController extends Controller
         $espacio = Espacio::where('id_espacio', $request->id_espacio)->select('estatus')->first();
 
         return response()->json($espacio, 200);
+    }
+
+    public function get(Request $request){
+
+        $mostrar_solo_disponibles = $request->boolean('mostrar_solo_disponibles', true);
+
+        $espacios = Espacio::
+        when($mostrar_solo_disponibles == true, function($quer) use ($mostrar_solo_disponibles) {
+            $quer->where('estatus', 1);
+        })
+        ->get();
+
+        return response()->json($espacios, 200);
     }
 }
